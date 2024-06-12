@@ -34,12 +34,12 @@ class FlutterMetaSdkMethods {
     }
 
     static func clearUserID(result: @escaping FlutterResult) {
-        AppEvents.shared.userID = nil
+        AppEvents.userID = nil
         result(nil)
     }
 
     static func flush(result: @escaping FlutterResult) {
-        AppEvents.shared.flush()
+        AppEvents.flush()
         result(nil)
     }
 
@@ -48,18 +48,18 @@ class FlutterMetaSdkMethods {
     }
 
     static func getAnonymousId(result: @escaping FlutterResult) {
-        result(AppEvents.shared.anonymousID)
+        result(AppEvents.anonymousID)
     }
 
     static func logEvent(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         let arguments = call.arguments as? [String: Any] ?? [String: Any]()
         let eventName = arguments["name"] as! String
-        let parameters = arguments["parameters"] as? [AppEvents.ParameterName: Any] ?? [AppEvents.ParameterName: Any]()
+        let parameters = arguments["parameters"] as? [String: Any] ?? [String: Any]()
         if arguments["_valueToSum"] != nil && !(arguments["_valueToSum"] is NSNull) {
             let valueToDouble = arguments["_valueToSum"] as! Double
-            AppEvents.shared.logEvent(AppEvents.Name(eventName), valueToSum: valueToDouble, parameters: parameters)
+            AppEvents.logEvent(AppEvents.Name(eventName), valueToSum: valueToDouble, parameters: parameters)
         } else {
-            AppEvents.shared.logEvent(AppEvents.Name(eventName), parameters: parameters)
+            AppEvents.logEvent(AppEvents.Name(eventName), parameters: parameters)
         }
 
         result(nil)
@@ -70,9 +70,9 @@ class FlutterMetaSdkMethods {
         let payload = arguments["payload"] as? [String: Any]
         if let action = arguments["action"] {
             let actionString = action as! String
-            AppEvents.shared.logPushNotificationOpen(payload: payload!, action: actionString)
+            AppEvents.logPushNotificationOpen(payload!, action: actionString)
         } else {
-            AppEvents.shared.logPushNotificationOpen(payload: payload!)
+            AppEvents.logPushNotificationOpen(payload!)
         }
 
         result(nil)
@@ -80,7 +80,7 @@ class FlutterMetaSdkMethods {
 
     static func setUserId(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         let id = call.arguments as! String
-        AppEvents.shared.userID = id
+        AppEvents.userID = id
         result(nil)
     }
 
@@ -96,7 +96,7 @@ class FlutterMetaSdkMethods {
         let state = arguments["state"] as? Int32 ?? 0
         let country = arguments["country"] as? Int32 ?? 0
 
-        Settings.shared.setDataProcessingOptions(modes, country: country, state: state)
+        Settings.setDataProcessingOptions(modes, country: country, state: state)
 
         result(nil)
     }
@@ -105,8 +105,8 @@ class FlutterMetaSdkMethods {
         let arguments = call.arguments as? [String: Any] ?? [String: Any]()
         let amount = arguments["amount"] as! Double
         let currency = arguments["currency"] as! String
-        let parameters = arguments["parameters"] as? [AppEvents.ParameterName: Any] ?? [AppEvents.ParameterName: Any]()
-        AppEvents.shared.logPurchase(amount: amount, currency: currency, parameters: parameters)
+        let parameters = arguments["parameters"] as? [String: Any] ?? [String: Any]()
+        AppEvents.logPurchase(amount, currency: currency, parameters: parameters)
 
         result(nil)
     }

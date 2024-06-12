@@ -17,8 +17,8 @@ Pod::Spec.new do |s|
   s.public_header_files = 'Classes/**/*.h'
   s.static_framework = true
   s.dependency 'Flutter'
-  s.dependency 'FBSDKCoreKit'
-  s.dependency 'FBAudienceNetwork'
+  s.dependency 'FBSDKCoreKit', '~> 12.0.2'
+  s.dependency 'FBAudienceNetwork', '~> 6.9.0'
   s.platform = :ios, '10.0'
 
   # Flutter.framework does not contain a i386 slice.
